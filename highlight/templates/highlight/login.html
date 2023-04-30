@@ -1,0 +1,23 @@
+{% extends "highlight/layout.html" %}
+
+{% block body %}
+
+{% load crispy_forms_tags %}
+
+<div class="container py-5">
+    <form action="{% url 'login_view' %}" method="post">
+        {% csrf_token %}
+        <h3>Login</h3>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {{form|crispy}}
+        <input class="btn btn-primary"  type="submit" value="Log in"> 
+    </form>
+</div>
+
+{% endblock %}

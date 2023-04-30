@@ -1,0 +1,28 @@
+{% extends "highlight/layout.html" %}
+
+{% block body %}    
+    <div>
+        {% if messages %}
+        <div class="d-flex flex-row mb-3 justify-content-center">
+            {% for message in messages %}
+            <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+            {% endif %}    
+        {% if user.is_authenticated %} 
+            <div class="d-flex flex-row mb-3 justify-content-center">
+                <div class="p-2">
+                    <button type="button" class="btn btn-dark" href="{% url 'search' %}">Add note</button>
+                </div>
+                <div class="p-2">
+                    <form action="{% url 'search' %}" class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>   
+                </div>
+            </div>   
+        {% else %}
+            <h1>Anonymous user</h1>
+        {% endif %}
+    </div>
+{% endblock %}

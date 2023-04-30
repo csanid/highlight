@@ -7,52 +7,53 @@ from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm, LoginForm, NoteForm
 
 def index(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("login"))    
+    # if not request.user.is_authenticated:
+        # return HttpResponseRedirect(reverse("login"))    
     # context variables for authenticated user: display of recent cards
     # o en realidad que se muestren todas ordenadas por más recientes
     return render(request, "highlight/index.html")
 
-def login(request):
-    if request.method == "POST":
-        form = LoginForm(request.POST)
+def login_view(request):
+    form = LoginForm(request.POST or None)
+    if request.method == "POST":        
         if form.is_valid():
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                messages.success(request, f"Welcome back {username}!")
+                # messages.success(request, f"Welcome back, {username.capitalize()}!")
                 return HttpResponseRedirect(reverse("index"))
             else:
-                # or messages.error(request, "Invalid credentials")
-                return render (request, "highlight/login.html", {
-                    "message": "Invalid username or password"
+                messages.error(request, "Invalid username or password")
+                return render(request, "highlight/login.html", {
+                    "form": form
+                    # "message": "Invalid username or password"
                 })
-    form = LoginForm()
     return render(request, "highlight/login.html", {
         "form": form
     })
 
 @login_required
-def logout(request):
+def logout_view(request):
     logout(request)
-    return render(request, "highlight/login.html", {
-        "message": "Successfully logged out"
-    })
+    messages.success(request, "You have successfully logged out")
+    return HttpResponseRedirect(reverse("login_view"))
+    # return render(request, "highlight/login.html", {
+    #     "message": "You have successfully logged out"
+    #})
 
 def register(request):
-    if request.method == "POST":
-        form = RegisterForm(request.POST)
+    form = RegisterForm(request.POST or None)
+    if request.method == "POST":        
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
             login(request, user)
-            return render(request, "highlight.index.html", {
+            return render(request, "highlight/index.html", {
                 "message": "You have successfully registered"
-            })  
-    form = RegisterForm()
+            })      
     return render(request, "highlight/register.html", { 
         "form": form 
     })
