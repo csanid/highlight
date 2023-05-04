@@ -11,7 +11,11 @@ def index(request):
         # return HttpResponseRedirect(reverse("login"))    
     # context variables for authenticated user: display of recent cards
     # o en realidad que se muestren todas ordenadas por más recientes
-    return render(request, "highlight/index.html")
+    title = "Quotes"
+    content = "'Speak the truth, and you shall not be friendless while I live.'"
+    return render(request, "highlight/index.html", {
+        "title": title, "content": content
+    })
 
 def login_view(request):
     form = LoginForm(request.POST or None)
