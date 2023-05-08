@@ -1,9 +1,11 @@
-/** .btn-outline-success {
-    background-color: #7c3db0 !important;
-    color: #ffffff !important; 
-} **/
-
-
 .card-body {
     background-color: #fffd85;    
+}
+
+.card-text {
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;    
 }

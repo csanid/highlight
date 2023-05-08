@@ -34,8 +34,7 @@ def login_view(request):
             else:
                 messages.error(request, "Invalid username or password")
                 return render(request, "highlight/login.html", {
-                    "form": form
-                    # "message": "Invalid username or password"
+                    "form": form                    
                 })
     return render(request, "highlight/login.html", {
         "form": form
@@ -46,9 +45,6 @@ def logout_view(request):
     logout(request)
     messages.success(request, "You have successfully logged out")
     return HttpResponseRedirect(reverse("login_view"))
-    # return render(request, "highlight/login.html", {
-    #     "message": "You have successfully logged out"
-    #})
 
 def register(request):
     form = RegisterForm(request.POST or None)
@@ -66,8 +62,7 @@ def register(request):
     })
 
 @login_required
-def add(request):
-    
+def add(request):    
     if request.method == "POST":
         form = NoteForm(request.POST)
         if form.is_valid():
