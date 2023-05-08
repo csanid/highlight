@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 # ver https://medium.com/swlh/how-to-style-your-django-forms-7e8463aae4fa para estilo
-# ver widget textarea 
 
 class RegisterForm(UserCreationForm):
     class Meta:
@@ -20,3 +19,6 @@ class NoteForm(ModelForm):
     class Meta:
         model = Note
         fields = ["title", "author", "book_title", "publisher", "year", "content"]
+        widgets = {
+          'content': forms.Textarea(attrs={'rows':'3'}),
+        }

@@ -1,12 +1,9 @@
-.btn-outline-success {
-    background-color: #7c3db0;
-    color: #ffffff;
-}
+/** .btn-outline-success {
+    background-color: #7c3db0 !important;
+    color: #ffffff !important; 
+} **/
 
-body {
-    background-color: #c9c9c9;
-}
 
 .card-body {
-    background-color: #fffeb9;    
+    background-color: #fffd85;    
 }

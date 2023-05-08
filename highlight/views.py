@@ -13,8 +13,11 @@ def index(request):
     # o en realidad que se muestren todas ordenadas por más recientes
     title = "Quotes"
     content = "'Speak the truth, and you shall not be friendless while I live.'"
+    form = NoteForm
     return render(request, "highlight/index.html", {
-        "title": title, "content": content
+        "form" : form,
+        "title": title, 
+        "content": content
     })
 
 def login_view(request):
@@ -64,10 +67,15 @@ def register(request):
 
 @login_required
 def add(request):
-    # if request.method == "POST":
-        # validate and add note
-    return render(request, "highlight/add.html")
-
+    
+    if request.method == "POST":
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.user_id = request.user
+            note.save()
+            return HttpResponseRedirect(reverse("index"))
+        
 @login_required
 def edit(request):
     return render(request, "highlight/edit.html")

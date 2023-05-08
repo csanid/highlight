@@ -1,5 +1,7 @@
 {% extends "highlight/layout.html" %}
 
+{% load crispy_forms_tags %}
+
 {% block body %}    
     <div>
         {% if messages %}
@@ -12,7 +14,31 @@
         {% if user.is_authenticated %} 
             <div class="d-flex flex-row mb-3 justify-content-center">
                 <div class="p-2">
-                    <button type="button" class="btn btn-dark" href="{% url 'search' %}">Add note</button>
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#noteModal">Add note</button>
+                </div>
+                <div class="modal fade" id="noteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">New note</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Save"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{% url 'add' %}" method="post">
+                                    {% csrf_token %}                                    
+                                    {% if messages %}
+                                    <ul class="messages">
+                                        {% for message in messages %}
+                                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                    {{form|crispy}}
+                                    <input class="btn btn-dark" style="float: right;" type="submit" value="Save and close">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="p-2">
                     <form action="{% url 'search' %}" class="d-flex" role="search">
@@ -39,7 +65,7 @@
                         <div class="card h-100">
                             <div class="card-body">
                                 <h5 class="card-title">{{ title }}</h5>
-                                <p class="card-text">{{ content }}</p>
+                                <p class="card-text text-truncate">{{ content }}</p>
                                 <a href="#" class="btn btn-dark">Open</a>
                             </div>
                         </div>
@@ -48,7 +74,7 @@
                         <div class="card h-100">
                             <div class="card-body">
                                 <h5 class="card-title">More quotes</h5>
-                                <p class="card-text">Speak the truth, and you shall not be friendless while I live. — Mr. Brownlow</p>
+                                <p class="card-text text-truncate">Speak the truth, and you shall not be friendless while I live. — Mr. Brownlow</p>
                                 <a href="#" class="btn btn-dark">Open</a>
                             </div>
                         </div>
@@ -57,28 +83,17 @@
                         <div class="card h-100">
                             <div class="card-body">
                                 <h5 class="card-title">Oliver Twist</h5>
-                                <p class="card-text">Favorite quotes: “Every trade has its draw-backs.” — Mr. Bumble (Chapter 4)
+                                <p class="card-text text-truncate">Favorite quotes: “Every trade has its draw-backs.” — Mr. Bumble (Chapter 4)
                                 “Every man’s his own friend, my dear.” — Fagin (Chapter 43)                      
                                 “Dignity, and even holiness too, sometimes, are more questions of coat and waistcoat than some people imagine.” — Narrator (Chapter 37)</p>
                                 <a href="#" class="btn btn-dark">Open</a>
                             </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Oliver Twist</h5>
-                                <p class="card-text">Favorite quotes: “Every trade has its draw-backs.” — Mr. Bumble (Chapter 4)
-                                    “Every man’s his own friend, my dear.” — Fagin (Chapter 43)
-                                    “Some people are nobody’s enemies but their own” — Morris Bolter (Chapter 43)</p>
-                                <a href="#" class="btn btn-dark">Open</a>
-                            </div>
-                        </div>
-                    </div>
+                    </div>                                              
                 </div>
             </div>
         {% else %}
-            <h1>Anonymous user</h1>
+            <h1>Anonymous user / Logo</h1>
         {% endif %}
     </div>
 {% endblock %}
