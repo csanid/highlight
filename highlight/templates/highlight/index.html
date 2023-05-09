@@ -10,90 +10,55 @@
             <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
             {% endfor %}
         </div>
-            {% endif %}    
-        {% if user.is_authenticated %} 
-            <div class="d-flex flex-row mb-3 justify-content-center">
-                <div class="p-2">
-                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#noteModal">Add note</button>
-                </div>
-                <div class="modal fade" id="noteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">New note</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Save"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="{% url 'add' %}" method="post">
-                                    {% csrf_token %}                                    
-                                    {% if messages %}
-                                    <ul class="messages">
-                                        {% for message in messages %}
-                                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                                        {% endfor %}
-                                    </ul>
-                                    {% endif %}
-                                    {{form|crispy}}
-                                    <input class="btn btn-dark" style="float: right;" type="submit" value="Save and close">
-                                </form>
-                            </div>
+        {% endif %}    
+        <div class="d-flex flex-row mb-3 justify-content-center">
+            <div class="p-2">
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#noteModal">Add note</button>
+            </div>
+            <div class="modal fade" id="noteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">New note</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Save"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{% url 'add' %}" method="post">
+                                {% csrf_token %}                                    
+                                {% if messages %}
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                                {{form|crispy}}
+                                <input class="btn btn-dark" style="float: right;" type="submit" value="Save and close">
+                            </form>
                         </div>
                     </div>
-                </div>
-                <div class="p-2">
-                    <form action="{% url 'search' %}" class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>   
-                </div>               
-            </div>   
-            <div class="container">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <div class="col">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Oliver Twist</h5>
-                                <p class="card-text">Favorite quotes: “Every trade has its draw-backs.” — Mr. Bumble (Chapter 4)
-                                    “Every man’s his own friend, my dear.” — Fagin (Chapter 43)
-                                    “Some people are nobody’s enemies but their own” — Morris Bolter (Chapter 43)
-                                    “Dignity, and even holiness too, sometimes, are more questions of coat and waistcoat than some people imagine.” — Narrator (Chapter 37)
-                                    “Every man’s his own friend, my dear.” — Fagin (Chapter 43)
-                                    “Some people are nobody’s enemies but their own” — Morris Bolter (Chapter 43)</p>                                
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ title }}</h5>
-                                <p class="card-text">{{ content }}</p>
-                                <!--<a href="#" class="btn btn-dark">Open</a>-->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">More quotes</h5>
-                                <p class="card-text">Speak the truth, and you shall not be friendless while I live. — Mr. Brownlow</p>                                
-                            </div>
-                        </div>
-                    </div>              
-                    <div class="col">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Oliver Twist</h5>
-                                <p class="card-text">“Dignity, and even holiness too, sometimes, are more questions of coat and waistcoat than some people imagine.” — Narrator (Chapter 37)
-                                    “Every man’s his own friend, my dear.” — Fagin (Chapter 43)
-                                    “Some people are nobody’s enemies but their own” — Morris Bolter (Chapter 43)
-                                </p>                                
-                            </div>
-                        </div>
-                    </div>                                              
                 </div>
             </div>
-        {% else %}
-            <h1>Anonymous user / Logo</h1>
-        {% endif %}
+            <div class="p-2">
+                <form action="{% url 'search' %}" class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>   
+            </div>               
+        </div>   
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for note in notes %}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{note.title}}</h5>
+                            <p class="card-text">{{note.content|linebreaksbr}}</p>                                
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}                                                                              
+            </div>
+        </div>
     </div>
 {% endblock %}

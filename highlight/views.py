@@ -5,19 +5,21 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm, LoginForm, NoteForm
+from .models import Note
 
 def index(request):
-    # if not request.user.is_authenticated:
-        # return HttpResponseRedirect(reverse("login"))    
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login_view"))    
     # context variables for authenticated user: display of recent cards
     # o en realidad que se muestren todas ordenadas por más recientes
-    title = "Quotes"
-    content = "'Speak the truth, and you shall not be friendless while I live.'"
     form = NoteForm
+    user = request.user
+    notes = user.notes.all().order_by("-timestamp")
+    # notes = Note.objects.filter(
+        # user_id = request.user).order_by("-timestamp")
     return render(request, "highlight/index.html", {
-        "form" : form,
-        "title": title, 
-        "content": content
+        "form": form,
+        "notes": notes        
     })
 
 def login_view(request):
