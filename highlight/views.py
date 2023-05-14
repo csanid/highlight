@@ -1,5 +1,5 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -9,9 +9,7 @@ from .models import Note
 
 def index(request):
     if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("login_view"))    
-    # context variables for authenticated user: display of recent cards
-    # o en realidad que se muestren todas ordenadas por más recientes
+        return HttpResponseRedirect(reverse("login"))    
     form = NoteForm
     user = request.user
     notes = user.notes.all().order_by("-timestamp")
@@ -46,7 +44,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     messages.success(request, "You have successfully logged out")
-    return HttpResponseRedirect(reverse("login_view"))
+    return HttpResponseRedirect(reverse("login"))
 
 def register(request):
     form = RegisterForm(request.POST or None)
@@ -67,9 +65,16 @@ def register(request):
 def add(request):    
     if request.method == "POST":
         form = NoteForm(request.POST)
-        if form.is_valid():
+        if form.is_valid():       
+            note_id = form.data.get("note_id")
+            if note_id:                
+                note.pk = note_id 
+                note.save(force_update=True) 
+                print(f"note_id = {note_id}, note.pk = {note.pk}" )
+            else:
+                print("no note_id")
             note = form.save(commit=False)
-            note.user_id = request.user
+            note.user_id = request.user          
             note.save()
             return HttpResponseRedirect(reverse("index"))
         
@@ -83,4 +88,22 @@ def delete(request):
 
 @login_required
 def search(request):
+    # resultados en index con opción de "< Back" en botón o texto para volver a home
     return render(request, "highlight/search.html")
+
+@login_required
+def get_note(request, note_id):
+    if request.method == "GET":
+        note = get_object_or_404(Note, pk=note_id)
+        data = {            
+            "id": note.id,
+            # "user_id": note.user_id,
+            "title": note.title,
+            "author": note.author,
+            "book_title": note.book_title,
+            "publisher": note.publisher,
+            "year": note.year,
+            "content": note.content,
+            "timestamp": note.timestamp.isoformat(),
+        }
+        return JsonResponse(data)

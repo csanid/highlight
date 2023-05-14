@@ -23,7 +23,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Save"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{% url 'add' %}" method="post">
+                            <form action="{% url 'add' %}" id="noteForm" method="post">
                                 {% csrf_token %}                                    
                                 {% if messages %}
                                 <ul class="messages">
@@ -33,7 +33,7 @@
                                 </ul>
                                 {% endif %}
                                 {{form|crispy}}
-                                <input class="btn btn-dark" style="float: right;" type="submit" value="Save and close">
+                                <input class="btn btn-dark" id="submitButton" data-note_id="" style="float: right;" type="submit" value="Save and close">
                             </form>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 {% for note in notes %}
                 <div class="col">
-                    <div class="card h-100">
+                    <div class="card h-100" id="card" data-id="{{note.id}}" style="cursor: pointer;">
                         <div class="card-body">
                             <h5 class="card-title">{{note.title}}</h5>
                             <p class="card-text">{{note.content|linebreaksbr}}</p>                                
