@@ -66,21 +66,23 @@ def add(request):
     if request.method == "POST":
         form = NoteForm(request.POST)
         if form.is_valid():       
-            note_id = form.data.get("note_id")
-            if note_id:                
-                note.pk = note_id 
-                note.save(force_update=True) 
-                print(f"note_id = {note_id}, note.pk = {note.pk}" )
-            else:
-                print("no note_id")
             note = form.save(commit=False)
             note.user_id = request.user          
             note.save()
             return HttpResponseRedirect(reverse("index"))
         
 @login_required
-def edit(request):
-    return render(request, "highlight/edit.html")
+def edit(request, note_id):
+    note = Note.objects.get(id=note_id)
+    if request.method == "POST":
+        form = NoteForm(request.POST, instance=note)
+        if form.is_valid():
+            form.save()
+        return HttpResponseRedirect(reverse("index"))
+    # form = NoteForm(instance=note)
+    # return render(request, "highlight/index.html", {
+    #    "form": form              
+    # })
 
 @login_required
 def delete(request):
@@ -96,8 +98,7 @@ def get_note(request, note_id):
     if request.method == "GET":
         note = get_object_or_404(Note, pk=note_id)
         data = {            
-            "id": note.id,
-            # "user_id": note.user_id,
+            "id": note.id,            
             "title": note.title,
             "author": note.author,
             "book_title": note.book_title,
@@ -107,3 +108,4 @@ def get_note(request, note_id):
             "timestamp": note.timestamp.isoformat(),
         }
         return JsonResponse(data)
+ 
