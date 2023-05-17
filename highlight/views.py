@@ -85,13 +85,17 @@ def edit(request, note_id):
     # })
 
 @login_required
-def delete(request):
-    return render(request, "highlight/index.html")
+def delete(request, note_id):
+    if request.method == "GET":
+        Note.objects.filter(id=note_id).delete()
+        print(f"Delete button clicked for note {note_id}")
+        return HttpResponseRedirect(reverse("index"))
 
 @login_required
 def search(request):
+    if request.method == "GET":
     # resultados en index con opción de "< Back" en botón o texto para volver a home
-    return render(request, "highlight/search.html")
+        return render(request, "highlight/search.html")
 
 @login_required
 def get_note(request, note_id):

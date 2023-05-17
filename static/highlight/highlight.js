@@ -41,6 +41,14 @@ function populate_form(data) {
     form.content.value = data.content;
 }
 
+// Set text and action for delete confirmation dialog
+$(document).ready(function () {
+    $('#deleteDialog').on('shown.bs.modal', function(event) {
+        $("#title").text($(event.relatedTarget).data('title'));
+        $("#deleteConfirmBtn").attr('href', $(event.relatedTarget).data('url'));
+    });
+}); 
+
 /* document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('#card').forEach(card => {
         card.onclick = async function() {

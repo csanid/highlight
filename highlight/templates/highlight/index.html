@@ -52,12 +52,34 @@
                 <div class="col">
                     <div class="card h-100" id="card" data-id="{{note.id}}" style="cursor: pointer;">
                         <div class="card-body">
+                            <button id="deleteButton" data-title="{{note.title}}" data-url="{% url 'delete' note.id %}" onclick="event.stopPropagation()" data-bs-toggle="modal" data-bs-target="#deleteDialog" style="all: unset; cursor: pointer; float: right; ">
+                              <img src="/static/highlight/images/trash-fill.svg" alt="Delete" width="22rem" height="22rem">
+                            </button>                                                 
                             <h5 class="card-title">{{note.title}}</h5>
                             <p class="card-text">{{note.content|linebreaksbr}}</p>                                
                         </div>
                     </div>
                 </div>
-                {% endfor %}                                                                              
+                {% endfor %} 
+                <div class="modal fade" id="deleteDialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">                                    
+                            <div class="modal-header">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="float: right;"></button>                          
+                            </div>
+                            <div class="modal-body" style="text-align:center">
+                                <p>Are you sure that you want to delete note "<span id="title"></span>"?</p>
+                            </div>
+                            <div class="modal-footer">                                      
+                                <a href="" id="deleteConfirmBtn"> 
+                                    <button type="button" class="btn btn-outline-danger">Yes</button>
+                                    <!--probar para el botón: class="btn btn-danger btn-sm"-->
+                                </a>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>                                                                         
             </div>
         </div>
     </div>
