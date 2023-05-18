@@ -18,6 +18,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 }); 
 
+// Reset form when modal is closed
+$(document).ready(function () {
+    $('#noteModal').on('hidden.bs.modal', function () {
+        $(this).find('form').trigger('reset');
+    });
+});
+
 // Retrieve note data from database
 async function get_note(id) {
     const url = `/highlight/notes/${id}`;
@@ -33,6 +40,7 @@ async function get_note(id) {
 // Populate note form with data received from server
 function populate_form(data) {     
     const form = document.querySelector('#noteForm');    
+    document.querySelector('#modalTitle').innerHTML = data.title;
     form.title.value = data.title;
     form.author.value = data.author;
     form.book_title.value = data.book_title;

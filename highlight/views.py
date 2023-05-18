@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from .forms import RegisterForm, LoginForm, NoteForm
 from .models import Note
 
@@ -88,15 +89,30 @@ def edit(request, note_id):
 def delete(request, note_id):
     if request.method == "GET":
         Note.objects.filter(id=note_id).delete()
-        print(f"Delete button clicked for note {note_id}")
         return HttpResponseRedirect(reverse("index"))
 
 @login_required
 def search(request):
     if request.method == "GET":
-    # resultados en index con opción de "< Back" en botón o texto para volver a home
-        return render(request, "highlight/search.html")
-
+        search_term = request.GET.get("search-bar")
+        user = request.user
+        notes = user.notes.filter(
+            Q(title__icontains=search_term) |
+            Q(author__icontains=search_term) |
+            Q(book_title__icontains=search_term) |
+            Q(publisher__icontains=search_term) |
+            Q(year__icontains=search_term) |
+            Q(content__icontains=search_term)
+        )
+        print(notes)
+        search_message = f"Search results for '{search_term}':"
+        form = NoteForm
+        return render(request, "highlight/index.html", {
+            "form": form,
+            "notes": notes,
+            "search_message": search_message
+        })          
+       
 @login_required
 def get_note(request, note_id):
     if request.method == "GET":

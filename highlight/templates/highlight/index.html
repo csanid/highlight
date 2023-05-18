@@ -6,8 +6,9 @@
     <div>
         {% if messages %}
         <div class="d-flex flex-row mb-3 justify-content-center">
+            <!--REVISAR este bloque o borrar-->
             {% for message in messages %}
-            <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
             {% endfor %}
         </div>
         {% endif %}    
@@ -19,7 +20,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="staticBackdropLabel">New note</h1>
+                            <h1 class="modal-title fs-5" id="modalTitle">New note</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Save"></button>
                         </div>
                         <div class="modal-body">
@@ -41,13 +42,19 @@
             </div>
             <div class="p-2">
                 <form action="{% url 'search' %}" class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search in notes" aria-label="Search">
+                    <input class="form-control me-2" name="search-bar" type="search" placeholder="Search in notes" aria-label="Search">
                     <button class="btn btn-secondary" type="submit">Search</button>
                 </form>   
-            </div>               
-        </div> 
+            </div>                                       
+        </div>         
         <br>  
         <div class="container">
+            {% if search_message %}
+            <div style="text-align:center">
+                <h4>{{search_message}}</h4>
+                <br>              
+            </div>
+            {% endif %}
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 {% for note in notes %}
                 <div class="col">
@@ -73,14 +80,16 @@
                             </div>
                             <div class="modal-footer">                                      
                                 <a href="" id="deleteConfirmBtn"> 
-                                    <button type="button" class="btn btn-danger">Yes</button>                                    
+                                    <button type="button" class="btn btn-primary">Yes</button>                                    
                                 </a>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                             </div>
                         </div>
                     </div>
-                </div>                                                                         
+                </div> 
+                <p>{{back_to_index}}</p>                                                                        
             </div>
         </div>
+        <p></p>
     </div>
 {% endblock %}
