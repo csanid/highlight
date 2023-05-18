@@ -41,19 +41,20 @@
             </div>
             <div class="p-2">
                 <form action="{% url 'search' %}" class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <input class="form-control me-2" type="search" placeholder="Search in notes" aria-label="Search">
+                    <button class="btn btn-secondary" type="submit">Search</button>
                 </form>   
             </div>               
-        </div>   
+        </div> 
+        <br>  
         <div class="container">
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 {% for note in notes %}
                 <div class="col">
                     <div class="card h-100" id="card" data-id="{{note.id}}" style="cursor: pointer;">
                         <div class="card-body">
-                            <button id="deleteButton" data-title="{{note.title}}" data-url="{% url 'delete' note.id %}" onclick="event.stopPropagation()" data-bs-toggle="modal" data-bs-target="#deleteDialog" style="all: unset; cursor: pointer; float: right; ">
-                              <img src="/static/highlight/images/trash-fill.svg" alt="Delete" width="22rem" height="22rem">
+                            <button class="deleteBtn" id="deleteButton" data-title="{{note.title}}" data-url="{% url 'delete' note.id %}" onclick="event.stopPropagation()" data-bs-toggle="modal" data-bs-target="#deleteDialog">
+                              <img src="/static/highlight/images/trash-fill.svg" alt="Delete">
                             </button>                                                 
                             <h5 class="card-title">{{note.title}}</h5>
                             <p class="card-text">{{note.content|linebreaksbr}}</p>                                
@@ -72,8 +73,7 @@
                             </div>
                             <div class="modal-footer">                                      
                                 <a href="" id="deleteConfirmBtn"> 
-                                    <button type="button" class="btn btn-outline-danger">Yes</button>
-                                    <!--probar para el botón: class="btn btn-danger btn-sm"-->
+                                    <button type="button" class="btn btn-danger">Yes</button>                                    
                                 </a>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                             </div>

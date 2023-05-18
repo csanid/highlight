@@ -43,7 +43,7 @@ function populate_form(data) {
 
 // Set text and action for delete confirmation dialog
 $(document).ready(function () {
-    $('#deleteDialog').on('shown.bs.modal', function(event) {
+    $('#deleteDialog').on('show.bs.modal', function(event) {
         $("#title").text($(event.relatedTarget).data('title'));
         $("#deleteConfirmBtn").attr('href', $(event.relatedTarget).data('url'));
     });
