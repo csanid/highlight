@@ -34,7 +34,7 @@
                                 </ul>
                                 {% endif %}
                                 {{form|crispy}}
-                                <input class="btn btn-dark" id="submitButton" style="float: right;" type="submit" value="Save and close">
+                                <input class="btn btn-primary" id="submitButton" style="float: right;" type="submit" value="Save and close">
                             </form>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
             </div>
             <div class="p-2">
                 <form action="{% url 'search' %}" class="d-flex" role="search">
-                    <input class="form-control me-2" name="search-bar" type="search" placeholder="Search in notes" aria-label="Search">
+                    <input class="form-control me-2" name="search-bar" type="search" placeholder="Search in notes" aria-label="Search" required>
                     <button class="btn btn-secondary" type="submit">Search</button>
                 </form>   
             </div>                                       
@@ -51,7 +51,7 @@
         <div class="container">
             {% if search_message %}
             <div style="text-align:center">
-                <h4>{{search_message}}</h4>
+                <h5>{{search_message}}</h5>
                 <br>              
             </div>
             {% endif %}
@@ -86,10 +86,16 @@
                             </div>
                         </div>
                     </div>
-                </div> 
-                <p>{{back_to_index}}</p>                                                                        
+                </div>                               
             </div>
-        </div>
-        <p></p>
+            {% if search_message %}  
+            <br>              
+            <div>
+                <a href="{% url 'index' %}">
+                    <button type="button" class="btn btn-outline-primary">< Back to home</button>                                    
+                </a>
+            </div>                
+            {% endif %}    
+        </div>      
     </div>
 {% endblock %}

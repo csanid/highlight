@@ -63,6 +63,18 @@ def register(request):
     })
 
 @login_required
+def settings(request):
+    if request.method == "GET":
+        return render(request, "highlight/settings.html")
+
+
+@login_required
+def delete_account(request):
+    if request.method == "GET":
+        # delete user and logout if needed
+        return HttpResponseRedirect(reverse("login"))
+
+@login_required
 def add(request):    
     if request.method == "POST":
         form = NoteForm(request.POST)
@@ -94,7 +106,7 @@ def delete(request, note_id):
 @login_required
 def search(request):
     if request.method == "GET":
-        search_term = request.GET.get("search-bar")
+        search_term = request.GET.get("search-bar")   
         user = request.user
         notes = user.notes.filter(
             Q(title__icontains=search_term) |
@@ -103,9 +115,11 @@ def search(request):
             Q(publisher__icontains=search_term) |
             Q(year__icontains=search_term) |
             Q(content__icontains=search_term)
-        )
-        print(notes)
-        search_message = f"Search results for '{search_term}':"
+        )        
+        if not notes.exists():
+            search_message = f"No results found for '{search_term}'"
+        else:
+            search_message = f"Search results for '{search_term}':"        
         form = NoteForm
         return render(request, "highlight/index.html", {
             "form": form,

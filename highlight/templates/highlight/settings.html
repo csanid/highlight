@@ -1,0 +1,52 @@
+{% extends "highlight/layout.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block body %}   
+    <div class="container py-5">
+        <section class="row justify-content-center">
+            <section class="col-12 col-sm-6 col-md-4">
+                <div class="list-group list-group-flash">
+                    <button type="button" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#changePwModal">Change password</button>
+                    <button type="button" class="list-group-item list-group-item-action list-group-item-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete account</button>
+                </div>                      
+            </section>
+        </section>
+        <div class="modal fade" id="changePwModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">                                    
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalTitle">Change password</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="float: right;"></button>                          
+                    </div>
+                    <div class="modal-body" style="text-align:center">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{form.as_p|crispy}}
+                            <input class="btn btn-primary" id="submitButton" style="float: right;" type="submit" value="Update password">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>          
+        <div class="modal fade" id="deleteAccountModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">                                    
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="float: right;"></button>                          
+                    </div>
+                    <div class="modal-body" style="text-align:center">
+                        <p>Are you sure that you want to permanently delete your account?</p>                                            
+                        <p><b>WARNING: All your notes will be lost. This action cannot be undone.</b></p>
+                    </div>
+                    <div class="modal-footer">                                      
+                        <a href="{% url 'delete_account' %}" id="deleteAccountConfirmBtn"> 
+                            <button type="button" class="btn btn-danger">Yes</button>                                    
+                        </a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>               
+    </div>
+{% endblock %}
