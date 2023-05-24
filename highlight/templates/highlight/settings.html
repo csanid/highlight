@@ -3,32 +3,32 @@
 {% load crispy_forms_tags %}
 
 {% block body %}   
+    <!-- {% if messages %}
+    <div class="d-flex flex-row mb-3 justify-content-center">
+        {% for message in messages %}
+            <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %} -->
+    
     <div class="container py-5">
         <section class="row justify-content-center">
             <section class="col-12 col-sm-6 col-md-4">
+                {% if messages %}
+                    <div style="text-align: center;">
+                        {% for message in messages %}
+                            <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %} 
                 <div class="list-group list-group-flash">
-                    <button type="button" class="list-group-item list-group-item-action" data-bs-toggle="modal" data-bs-target="#changePwModal">Change password</button>
+                    <form action="{% url 'change_password' %}" method="get">
+                        <button type="submit" class="list-group-item list-group-item-action">Change password</button>
+                    </form>
                     <button type="button" class="list-group-item list-group-item-action list-group-item-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete account</button>
                 </div>                      
             </section>
-        </section>
-        <div class="modal fade" id="changePwModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">                                    
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="modalTitle">Change password</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="float: right;"></button>                          
-                    </div>
-                    <div class="modal-body" style="text-align:center">
-                        <form method="post">
-                            {% csrf_token %}
-                            {{form.as_p|crispy}}
-                            <input class="btn btn-primary" id="submitButton" style="float: right;" type="submit" value="Update password">
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>          
+        </section>       
         <div class="modal fade" id="deleteAccountModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">                                    

@@ -2,8 +2,9 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse 
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.db.models import Q
 from .forms import RegisterForm, LoginForm, NoteForm
 from .models import Note
@@ -64,9 +65,27 @@ def register(request):
 
 @login_required
 def settings(request):
-    if request.method == "GET":
+    if request.method == "GET":        
         return render(request, "highlight/settings.html")
 
+@login_required
+def change_password(request):
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "Your password was successfully updated")
+            return HttpResponseRedirect(reverse("settings"))   
+        else:
+            # messages.error(request, "Please try again")     
+            return render(request, "highlight/password_update.html", {
+                "form": form
+            })
+    form = PasswordChangeForm(request.user)
+    return render(request, "highlight/password_update.html", {
+        "form": form
+    })
 
 @login_required
 def delete_account(request):

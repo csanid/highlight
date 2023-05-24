@@ -1,7 +1,8 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
-
+# from django.contrib.auth import views as auth_views
 from . import views
+# from .forms import MyPasswordChangeForm
+# from highlight.views import MyPasswordChangeView
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -14,11 +15,13 @@ urlpatterns = [
     path("delete/<int:note_id>", views.delete, name="delete"),
     path("search", views.search, name="search"),
     path("settings", views.settings, name="settings"),
-    path("change_password", 
-         auth_views.PasswordChangeView.as_view(
-             template_name="settings.html",
-             success_url="/"
-         ), 
-         name="change_password"),
+    path("change_password", views.change_password, name="change_password"),
+    # path("change_password", 
+    #     auth_views.PasswordChangeView.as_view(
+    #        template_name="settings.html",
+    #        # form_class=MyPasswordChangeForm,
+    #        success_url = "settings.html"
+    #    ), 
+    #    name="change_password"),
     path("delete_account", views.delete_account, name="delete_account")
 ]

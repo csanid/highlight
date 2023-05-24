@@ -2,19 +2,8 @@
     box-shadow: 0 2px 4px 0 #00000033, 0 3px 10px 0 #00000030; 
 }
 
-.form-control:focus {
-    box-shadow: grey !important;
-    outline: grey !important;
-}
-
-.form-group:focus .form-control {
-    box-shadow: grey;
-    border-color: #acb0b5;
-    outline: grey;
-}
-
 .form-control {
-    box-shadow: 0 3px 10px 0 #00000030;     
+    box-shadow: 0 3px 10px 0 #00000030;   
 }
 
 .card-body {
