@@ -16,12 +16,5 @@ urlpatterns = [
     path("search", views.search, name="search"),
     path("settings", views.settings, name="settings"),
     path("change_password", views.change_password, name="change_password"),
-    # path("change_password", 
-    #     auth_views.PasswordChangeView.as_view(
-    #        template_name="settings.html",
-    #        # form_class=MyPasswordChangeForm,
-    #        success_url = "settings.html"
-    #    ), 
-    #    name="change_password"),
     path("delete_account", views.delete_account, name="delete_account")
 ]

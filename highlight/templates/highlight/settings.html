@@ -36,14 +36,14 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="float: right;"></button>                          
                     </div>
                     <div class="modal-body" style="text-align:center">
-                        <p>Are you sure that you want to permanently delete your account?</p>                                            
-                        <p><b>WARNING: All your notes will be lost. This action cannot be undone.</b></p>
+                        <p>Are you sure that you want to delete your account?</p>                                            
+                        <p><b>WARNING: All your notes will be lost. <br>This action cannot be undone.</b></p>
                     </div>
-                    <div class="modal-footer">                                      
+                    <div class="modal-footer">  
                         <a href="{% url 'delete_account' %}" id="deleteAccountConfirmBtn"> 
                             <button type="button" class="btn btn-danger">Yes</button>                                    
                         </a>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>

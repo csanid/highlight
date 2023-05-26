@@ -43,7 +43,7 @@
             <div class="p-2">
                 <form action="{% url 'search' %}" class="d-flex" role="search">
                     <input class="form-control me-2" name="search-bar" type="search" placeholder="Search in notes" aria-label="Search" required>
-                    <button class="btn btn-secondary" type="submit">Search</button>
+                    <button class="btn btn-primary" type="submit">Search</button>
                 </form>   
             </div>                                       
         </div>         
@@ -63,7 +63,7 @@
                             <button class="deleteBtn" id="deleteButton" data-title="{{note.title}}" data-url="{% url 'delete' note.id %}" onclick="event.stopPropagation()" data-bs-toggle="modal" data-bs-target="#deleteDialog">
                               <img src="/static/highlight/images/trash-fill.svg" alt="Delete">
                             </button>                                                 
-                            <h5 class="card-title">{{note.title}}</h5>
+                            <h5 class="card-title"><b>{{note.title}}</b></h5>
                             <p class="card-text">{{note.content|linebreaksbr}}</p>                                
                         </div>
                     </div>
@@ -80,9 +80,9 @@
                             </div>
                             <div class="modal-footer">                                      
                                 <a href="" id="deleteConfirmBtn"> 
-                                    <button type="button" class="btn btn-primary">Yes</button>                                    
+                                    <button type="button" class="btn btn-danger">Yes</button>                                    
                                 </a>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
                             </div>
                         </div>
                     </div>

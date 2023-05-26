@@ -4,9 +4,8 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
 from django.db.models import Q
-from .forms import RegisterForm, LoginForm, NoteForm
+from .forms import RegisterForm, CustomPasswordChangeForm, LoginForm, NoteForm
 from .models import Note
 
 def index(request):
@@ -31,7 +30,6 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                # messages.success(request, f"Welcome back, {username.capitalize()}!")
                 return HttpResponseRedirect(reverse("index"))
             else:
                 messages.error(request, "Invalid username or password")
@@ -45,7 +43,7 @@ def login_view(request):
 @login_required
 def logout_view(request):
     logout(request)
-    messages.success(request, "You have successfully logged out")
+    # messages.success(request, "You have successfully logged out")
     return HttpResponseRedirect(reverse("login"))
 
 def register(request):
@@ -56,8 +54,10 @@ def register(request):
             user.username = user.username.lower()
             user.save()
             login(request, user)
+            note_form = NoteForm
             return render(request, "highlight/index.html", {
-                "message": "You have successfully registered"
+                "message": "You have successfully registered",
+                "form": note_form
             })      
     return render(request, "highlight/register.html", { 
         "form": form 
@@ -71,18 +71,17 @@ def settings(request):
 @login_required
 def change_password(request):
     if request.method == "POST":
-        form = PasswordChangeForm(request.user, request.POST)
+        form = CustomPasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
             messages.success(request, "Your password was successfully updated")
             return HttpResponseRedirect(reverse("settings"))   
         else:
-            # messages.error(request, "Please try again")     
             return render(request, "highlight/password_update.html", {
                 "form": form
             })
-    form = PasswordChangeForm(request.user)
+    form = CustomPasswordChangeForm(request.user)
     return render(request, "highlight/password_update.html", {
         "form": form
     })
@@ -90,7 +89,8 @@ def change_password(request):
 @login_required
 def delete_account(request):
     if request.method == "GET":
-        # delete user and logout if needed
+        user = request.user
+        user.delete()
         return HttpResponseRedirect(reverse("login"))
 
 @login_required
