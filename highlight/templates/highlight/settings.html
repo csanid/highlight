@@ -3,24 +3,19 @@
 {% load crispy_forms_tags %}
 
 {% block body %}   
-    <!-- {% if messages %}
-    <div class="d-flex flex-row mb-3 justify-content-center">
-        {% for message in messages %}
-            <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-        {% endfor %}
-    </div>
-    {% endif %} -->
-    
+  
     <div class="container py-5">
         <section class="row justify-content-center">
             <section class="col-12 col-sm-6 col-md-4">
                 {% if messages %}
-                    <div style="text-align: center;">
-                        {% for message in messages %}
-                            <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-                        {% endfor %}
+                <p class="messages">
+                    {% for message in messages %}
+                    <div class="alert {{ message.tags }}" role="alert">
+                        {{ message }}
                     </div>
-                {% endif %} 
+                    {% endfor %}
+                </p>
+                {% endif %}
                 <div class="list-group list-group-flash">
                     <form action="{% url 'change_password' %}" method="get">
                         <button type="submit" class="list-group-item list-group-item-action">Change password</button>

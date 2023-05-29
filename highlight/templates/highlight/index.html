@@ -4,17 +4,9 @@
 
 {% block body %}    
     <div>
-        {% if messages %}
-        <div class="d-flex flex-row mb-3 justify-content-center">
-            <!--REVISAR este bloque o borrar-->
-            {% for message in messages %}
-                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-            {% endfor %}
-        </div>
-        {% endif %}    
         <div class="d-flex flex-row mb-3 justify-content-center">
             <div class="p-2">
-                <button type="button" class="btn btn-dark" id="addButton" data-bs-toggle="modal" data-bs-target="#noteModal">Add note</button>
+                <button type="button" class="btn btn-dark" id="addButton" data-bs-toggle="modal" data-bs-target="#noteModal">New note</button>
             </div>
             <div class="modal fade" id="noteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -24,14 +16,16 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Save"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="" id="noteForm" method="post">
+                            <form action="" id="noteForm" method="post" novalidate>
                                 {% csrf_token %}                                    
                                 {% if messages %}
-                                <ul class="messages">
+                                <p class="messages">
                                     {% for message in messages %}
-                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                    <div class="alert {{ message.tags }}" role="alert">
+                                        {{ message }}
+                                    </div>
                                     {% endfor %}
-                                </ul>
+                                </p>
                                 {% endif %}
                                 {{form|crispy}}
                                 <input class="btn btn-primary" id="submitButton" style="float: right;" type="submit" value="Save and close">
@@ -76,7 +70,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="float: right;"></button>                          
                             </div>
                             <div class="modal-body" style="text-align:center">
-                                <p>Are you sure that you want to delete note "<span id="title"></span>"?</p>
+                                <p>Are you sure that you want to delete "<span id="title"></span>"?</p>
                             </div>
                             <div class="modal-footer">                                      
                                 <a href="" id="deleteConfirmBtn"> 

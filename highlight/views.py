@@ -14,8 +14,6 @@ def index(request):
     form = NoteForm
     user = request.user
     notes = user.notes.all().order_by("-timestamp")
-    # notes = Note.objects.filter(
-        # user_id = request.user).order_by("-timestamp")
     return render(request, "highlight/index.html", {
         "form": form,
         "notes": notes        
@@ -43,7 +41,6 @@ def login_view(request):
 @login_required
 def logout_view(request):
     logout(request)
-    # messages.success(request, "You have successfully logged out")
     return HttpResponseRedirect(reverse("login"))
 
 def register(request):
@@ -91,6 +88,7 @@ def delete_account(request):
     if request.method == "GET":
         user = request.user
         user.delete()
+        messages.success(request, "Your account has been deleted")
         return HttpResponseRedirect(reverse("login"))
 
 @login_required
@@ -102,7 +100,7 @@ def add(request):
             note.user_id = request.user          
             note.save()
             return HttpResponseRedirect(reverse("index"))
-        
+            
 @login_required
 def edit(request, note_id):
     note = Note.objects.get(id=note_id)
@@ -111,10 +109,6 @@ def edit(request, note_id):
         if form.is_valid():
             form.save()
         return HttpResponseRedirect(reverse("index"))
-    # form = NoteForm(instance=note)
-    # return render(request, "highlight/index.html", {
-    #    "form": form              
-    # })
 
 @login_required
 def delete(request, note_id):

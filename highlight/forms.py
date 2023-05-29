@@ -15,11 +15,11 @@ class RegisterForm(UserCreationForm):
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     def clean_new_password2(self):
-        old_password = self.cleaned_data.get('old_password')
-        new_password1 = self.cleaned_data.get('new_password1')
-        new_password2 = self.cleaned_data.get('new_password2')
+        old_password = self.cleaned_data.get("old_password")
+        new_password1 = self.cleaned_data.get("new_password1")
+        new_password2 = self.cleaned_data.get("new_password2")
         if new_password1 != new_password2:
-            raise ValidationError("The new passwords do not match.")
+            raise ValidationError("The new passwords do not match")
         if old_password == new_password1:
             raise ValidationError("The new password should be different from the old one")
         return new_password2 
@@ -33,5 +33,23 @@ class NoteForm(ModelForm):
         model = Note
         fields = ["title", "author", "book_title", "publisher", "year", "content"]
         widgets = {
-          'content': forms.Textarea(attrs={'rows':'3'}),
+          'content': forms.Textarea(attrs={'rows':'3', 'id': 'content'}),
         }
+    
+    def clean(self):
+        super(NoteForm, self).clean()
+        title = self.cleaned_data.get('title')
+        content = self.cleaned_data.get('content')
+        if not title or not content:
+            print("Error")
+            raise ValidationError("This field cannot be left blank")
+        return self.cleaned_data
+
+"""     def clean_title(self):
+        title = self.cleaned_data.get("title")
+        if not title:
+            print("Error")
+            raise ValidationError("This field cannot be left blank") 
+        return title  """
+    
+            
