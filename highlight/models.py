@@ -3,6 +3,7 @@ from django.conf import settings
 
 # Create your models here.
 class Note(models.Model):
+    # maybe add required=True
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="notes")    
     title = models.CharField(max_length=64)
     author = models.CharField(max_length=128, null=True, blank=True)

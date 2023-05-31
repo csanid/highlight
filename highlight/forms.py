@@ -4,9 +4,6 @@ from .models import Note
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.core.exceptions import ValidationError
-# PasswordChangeForm
-
-# ver https://medium.com/swlh/how-to-style-your-django-forms-7e8463aae4fa para estilo
 
 class RegisterForm(UserCreationForm):
     class Meta:
@@ -38,11 +35,11 @@ class NoteForm(ModelForm):
     
     def clean(self):
         super(NoteForm, self).clean()
-        title = self.cleaned_data.get('title')
-        content = self.cleaned_data.get('content')
-        if not title or not content:
-            print("Error")
-            raise ValidationError("This field cannot be left blank")
+        # super().clean()
+        title = self.cleaned_data.get("title")
+        content = self.cleaned_data.get("content")
+        if title == "" or content == "":
+            raise forms.ValidationError("This field is required")
         return self.cleaned_data
 
 """     def clean_title(self):

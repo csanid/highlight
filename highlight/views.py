@@ -55,7 +55,7 @@ def register(request):
             return render(request, "highlight/index.html", {
                 "message": "You have successfully registered",
                 "form": note_form
-            })      
+            })    
     return render(request, "highlight/register.html", { 
         "form": form 
     })
@@ -99,7 +99,15 @@ def add(request):
             note = form.save(commit=False)
             note.user_id = request.user          
             note.save()
-            return HttpResponseRedirect(reverse("index"))
+            return JsonResponse({"success": True})
+            # return HttpResponseRedirect(reverse("index"))
+        else: 
+            return JsonResponse({"success": False, "errors": form.errors})
+            # notes = request.user.notes.all().order_by("-timestamp")
+            # return render(request, "highlight/index.html", {
+            #     "form": form,
+            #     "notes": notes
+            # })
             
 @login_required
 def edit(request, note_id):
@@ -108,7 +116,10 @@ def edit(request, note_id):
         form = NoteForm(request.POST, instance=note)
         if form.is_valid():
             form.save()
-        return HttpResponseRedirect(reverse("index"))
+            return JsonResponse({"success": True})
+        else: 
+            return JsonResponse({"success": False, "errors": form.errors})
+        # return HttpResponseRedirect(reverse("index"))
 
 @login_required
 def delete(request, note_id):
