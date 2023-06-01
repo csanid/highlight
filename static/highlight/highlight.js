@@ -89,8 +89,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.href = "";
                 } else {
                     console.log('Error in server validation');
-                    console.log(data.errors)
-                    showValidationErrors(data.errors);
+                    console.log(data.errors);
+                    $('.errors').html(data['error']);
+                    showFormErrors(data.errors);
                 }
             },
             error: function (data) {
@@ -100,10 +101,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });        
     });
 
-    function showValidationErrors(errors) {
-
+    function showFormErrors(errors) {
+        $('#noteForm').find('.error-message').remove();
+        for (let key in errors) {
+            let error = errors[key][0];
+            let field = $('#noteForm').find('#div_id_' + key);
+            field.addClass('is-invalid');
+            field.after('<p class="error-message">' + error + '</p>');
+            console.log('key: ' + key + ' field:' + field + ' error:' + error);
+        }
     }
-
 });   
 
 // Reset form when modal is closed
@@ -111,6 +118,7 @@ $(document).ready(function() {
     $('#noteModal').on('hidden.bs.modal', function() {
         $('#modalTitle').text("New note");
         $('#noteForm')[0].reset();
+        $('#noteForm').find('.error-message').remove();
         $('#content').css('height', 'auto');
     });
 });

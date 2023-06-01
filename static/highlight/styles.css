@@ -16,6 +16,18 @@ body {
     box-shadow: 0 3px 10px 0 #00000030;   
 }
 
+.error-message {
+    margin-left: 5px;    
+    margin-top: -8px;
+    font-weight: bold;
+    font-size: 90%;
+    color: red;
+}
+
+.is-invalid {
+    border-color: red;
+}
+
 .modal-content {
     overflow-y: auto;
 }
