@@ -30,7 +30,8 @@ class NoteForm(ModelForm):
         model = Note
         fields = ["title", "author", "book_title", "publisher", "year", "content"]
         widgets = {
-          'content': forms.Textarea(attrs={'rows':'3', 'id': 'content'}),
+          'title': forms.TextInput(attrs={'oninvalid': 'setCustomValidity("This field is required")', 'oninput': 'setCustomValidity("")'}),
+          'content': forms.Textarea(attrs={'rows': '3', 'id': 'content', 'oninvalid': 'setCustomValidity("This field is required")', 'oninput': 'setCustomValidity("")'}),
         }
     
     def clean(self):

@@ -25,7 +25,7 @@ $(document).ready(function() {
     $('#noteModal').on('shown.bs.modal', function() {
         resize.call($('#content')[0]);
     });
-    $('#content').on('input', resize);    
+    // $('#content').on('input', resize);    
 });
 
 // Set action for form when "New note" button is clicked
@@ -72,7 +72,7 @@ function populate_form(data) {
     form.content.value = data.content;
 } 
 
-// Handle form submission
+// Handle server-side validation for form 
 document.addEventListener('DOMContentLoaded', function() {
     $('#noteForm').on('submit', function (event) {
         event.preventDefault();

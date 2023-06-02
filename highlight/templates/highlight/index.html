@@ -16,7 +16,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Save"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="" id="noteForm" method="post" novalidate>
+                            <form action="" id="noteForm" method="post">
                                 {% csrf_token %}                                    
                                 {% if messages %}
                                 <p class="messages">
@@ -38,7 +38,7 @@
             </div>
             <div class="p-2">
                 <form action="{% url 'search' %}" class="d-flex" role="search">
-                    <input class="form-control me-2" name="search-bar" type="search" placeholder="Search in notes" aria-label="Search" required>
+                    <input class="form-control me-2" name="search-bar" type="search" placeholder="Search in notes" aria-label="Search" required oninvalid="setCustomValidity('Please enter a search term')" oninput="setCustomValidity('')">
                     <button class="btn btn-primary" type="submit">Search</button>
                 </form>   
             </div>                                       
@@ -86,7 +86,7 @@
             </div>
             {% if search_message %}  
             <br>              
-            <div>
+            <div style="text-align:center">
                 <a href="{% url 'index' %}">
                     <button type="button" class="btn btn-outline-primary">< Back to home</button>                                    
                 </a>
