@@ -19,6 +19,20 @@ def index(request):
         "notes": notes        
     })
 
+def register(request):
+    form = RegisterForm(request.POST or None)
+    if request.method == "POST":        
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return HttpResponseRedirect(reverse("index"))
+    else:   
+        return render(request, "highlight/register.html", { 
+            "form": form 
+        })
+
 def login_view(request):
     form = LoginForm(request.POST or None)
     if request.method == "POST":        
@@ -42,23 +56,6 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("login"))
-
-def register(request):
-    form = RegisterForm(request.POST or None)
-    if request.method == "POST":        
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.username = user.username.lower()
-            user.save()
-            login(request, user)
-            note_form = NoteForm
-            return render(request, "highlight/index.html", {
-                "message": "You have successfully registered",
-                "form": note_form
-            })    
-    return render(request, "highlight/register.html", { 
-        "form": form 
-    })
 
 @login_required
 def settings(request):
@@ -100,14 +97,8 @@ def add(request):
             note.user_id = request.user          
             note.save()
             return JsonResponse({"success": True})
-            # return HttpResponseRedirect(reverse("index"))
         else: 
             return JsonResponse({"success": False, "errors": form.errors})
-            # notes = request.user.notes.all().order_by("-timestamp")
-            # return render(request, "highlight/index.html", {
-            #     "form": form,
-            #     "notes": notes
-            # })
             
 @login_required
 def edit(request, note_id):
@@ -119,7 +110,6 @@ def edit(request, note_id):
             return JsonResponse({"success": True})
         else: 
             return JsonResponse({"success": False, "errors": form.errors})
-        # return HttpResponseRedirect(reverse("index"))
 
 @login_required
 def delete(request, note_id):

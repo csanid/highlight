@@ -4,28 +4,13 @@ $(document).ready(function() {
         $(this).css('height', 'auto');
         $(this).css('height', this.scrollHeight + 'px');
 
-        // $('#noteModal').animate({
-        //     scrollTop: $('#noteModal').height() 
-        // }, 'slow');
- 
-        // let modalHeight = $('#noteModal .modal-content').outerHeight();
-        // if (modalHeight > $(window).height()) {
-            // let modalBottom = $('#noteModal .modal-dialog').offset().top + modalHeight;
-            // $('html, body').scrollTop(modalBottom);
-        // }
-        // if (this.clientHeight < this.scrollHeight) {            
-            // const target = $('#submitButton').offset().top - $(window).height() + $('#submitButton').outerHeight();
-            // $('html, body').scrollTop(target);
-            // window.scrollTo(0, document.body.scrollHeight);
-            // $('html, body').animate({
-            //     scrollTop: $(document).height() - $(window).height()
-            // }, 500);
-        // }
-    }
+        $('#noteModal').animate({
+            scrollTop: $('#noteModal').height() 
+        }, 'slow');
+     }
     $('#noteModal').on('shown.bs.modal', function() {
         resize.call($('#content')[0]);
     });
-    // $('#content').on('input', resize);    
 });
 
 // Set action for form when "New note" button is clicked
@@ -101,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });        
     });
 
+    // Show error messages    
     function showFormErrors(errors) {
         $('#noteForm').find('.error-message').remove();
         for (let key in errors) {

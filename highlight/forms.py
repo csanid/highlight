@@ -10,7 +10,17 @@ class RegisterForm(UserCreationForm):
         model = User
         fields = ["username", "password1", "password2"]
 
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        max_length=150, 
+        widget=forms.TextInput(attrs={'oninvalid': 'setCustomValidity("This field is required")', 'oninput': 'setCustomValidity("")'})
+    )    
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'oninvalid': 'setCustomValidity("This field is required")', 'oninput': 'setCustomValidity("")'})
+    )
+
 class CustomPasswordChangeForm(PasswordChangeForm):
+        
     def clean_new_password2(self):
         old_password = self.cleaned_data.get("old_password")
         new_password1 = self.cleaned_data.get("new_password1")
@@ -20,11 +30,7 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         if old_password == new_password1:
             raise ValidationError("The new password should be different from the old one")
         return new_password2 
-        
-class LoginForm(forms.Form):
-    username = forms.CharField(max_length=150)
-    password = forms.CharField(widget=forms.PasswordInput)
-
+    
 class NoteForm(ModelForm):
     class Meta:
         model = Note
@@ -36,18 +42,9 @@ class NoteForm(ModelForm):
     
     def clean(self):
         super(NoteForm, self).clean()
-        # super().clean()
         title = self.cleaned_data.get("title")
         content = self.cleaned_data.get("content")
         if title == "" or content == "":
             raise forms.ValidationError("This field is required")
-        return self.cleaned_data
-
-"""     def clean_title(self):
-        title = self.cleaned_data.get("title")
-        if not title:
-            print("Error")
-            raise ValidationError("This field cannot be left blank") 
-        return title  """
-    
+        return self.cleaned_data   
             
