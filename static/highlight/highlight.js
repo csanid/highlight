@@ -69,12 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
             success: function (data) {
                 if (data.success) {
                     $('#noteModal').modal('hide');
-                    console.log('Success');
-                    console.log(data);
                     window.location.href = "";
                 } else {
-                    console.log('Error in server validation');
-                    console.log(data.errors);
                     $('.errors').html(data['error']);
                     showFormErrors(data.errors);
                 }

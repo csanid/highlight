@@ -28,6 +28,10 @@ def register(request):
             user.save()
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
+        else: 
+            return render(request, "highlight/register.html", {
+               "form": form                    
+            })
     else:   
         return render(request, "highlight/register.html", { 
             "form": form 
