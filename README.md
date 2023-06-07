@@ -23,7 +23,7 @@ The class ``NoteForm`` creates a form based on the model ``Note`` that will be u
 ##### **Views**
 In ``views.py``, the logic of the app and its different functionalities are defined. Each of the views corresponds to a url specified in ``urls.py``, as is required by Django.
 
-The ``index`` view first checks if there is no user logged in and, in that case, redirects to the ``login`` view. If a user is currently logged in, the ``index.html`` template is rendered. Provided as context are an instance of ``NoteForm`` (which will be visible in a modal) and a QuerySet object containing all the notes added by the current user ordered according to their timestamp, newest first. To create the QuerySet, I made use of the related name defined in the model. 
+The ``index`` view first checks if there is no user logged in and, in that case, redirects to the ``login`` view. If a user is currently logged in, the ``index.html`` template is rendered. Provided as context are an instance of ``NoteForm`` (which will be visible in a modal) and a QuerySet object containing all the notes added by the current user ordered according to their timestamp, newest first. To create the QuerySet, I made use of the related name defined in the model. The template ``index.html`` will show a grid of cards representing all the notes saved by the user. Each card shows the title of the note and the first four lines of the content.
 
 The ``register`` view renders the ``register.html`` template with an instance of ``RegisterForm`` if the request method is ``get``. If the request method is ``post``, the view first checks if the data provided in the form is valid. In that case, it proceeds to add the username and password to the database with the logic provided by Django, logs the user in and redirects to the ``index`` view. If the form isn't valid, the view renders the ``register.html`` template again so as to show the custom error messages defined by Django. Thus the function provides server-side validation. 
 
@@ -37,7 +37,15 @@ The ``change_password`` view renders the ``password_update.html`` template if th
 
 The ``delete_account`` view deletes the user from the database and redirects them to the ``login`` view showing a success message that informs that the account has been deleted. 
 
-The ``add`` view first checks if the data submitted through the instance of ``NoteForm`` is valid. If it is, the note is saved to the database and the view returns a ``JsonResponse`` that will be handled with a JavaScript function. El JS separa el submit del comportamiento default del modal, que es cerrarse. 
+The ``add`` view first checks if the data submitted through the instance of ``NoteForm`` is valid. If it is, the note is saved to the database and the view returns a ``JsonResponse`` with a dictionary containing the key-value pair ``"success": True``. If the form isn't valid, the view will return a ``JsonResponse`` with the ``success`` key set to ``False`` and another key, ``errors``, listing the form errors. This ``JsonResponse`` will be handled with a JavaScript function that hides the modal and redirects to ``index.html`` if the value received was ``"success": True``, and keeps the modal open and shows the validation errors if the ``JsonResponse`` is ``"success": False``. This JavaScript function was necessary to avoid the closing of the modal once the submit button is clicked when there are validation errors. This way, server-side validation is ensured if browser validation were to fail.
+
+The ``edit`` view takes as arguments the request and the ``note_id`` corresponding to the card the user clicked on on the main page of the app. It first retrieves from the database the note identified with the ``note_id`` provided as argument, so that it will be possible to update that record with the data submitted via the form. If the form is valid, the update is saved to the database. The function returns, just like the ``add`` view, a ``JsonResponse`` indicating if the form was validated or not. The JSON response will be handled by the same JavaScript function explained in the previous paragraph: the modal will hide if the data submitted was OK, or otherwise will remain open showing the errors. 
+
+The ``delete`` view also takes a ``note_id`` as argument in order to delete from the database the note that corresponds to the card the user clicked on.
+
+The ``search`` view retrieves from the form the search term provided by the user and queries the records of the notes saved by them to check if that term is present in any of the fields. If there are notes where that term appears, they will be added to a QuerySet object that will be returned to the ``index.html`` template so that they can be displayed to the user. Otherwise, the QuerySet will be empty and a message will be shown indicating that there are no results.
+
+Finally, the ``get_note`` view VER de describirlo como API.
 
 ##### **Interaction with database**
 
