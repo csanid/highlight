@@ -13,7 +13,7 @@ class RegisterForm(UserCreationForm):
 class LoginForm(forms.Form):
     username = forms.CharField(
         max_length=150, 
-        widget=forms.TextInput(attrs={'oninvalid': 'setCustomValidity("This field is required")', 'oninput': 'setCustomValidity("")'})
+        widget=forms.TextInput(attrs={'autofocus': 'true', 'oninvalid': 'setCustomValidity("This field is required")', 'oninput': 'setCustomValidity("")'})
     )    
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={'oninvalid': 'setCustomValidity("This field is required")', 'oninput': 'setCustomValidity("")'})

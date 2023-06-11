@@ -1,13 +1,13 @@
-// Resize content field according to input 
+// Resize content field of modal and scroll down page 
 $(document).ready(function() {
-    function resize() {
+    function resize() { 
         $(this).css('height', 'auto');
         $(this).css('height', this.scrollHeight + 'px');
 
         $('#noteModal').animate({
             scrollTop: $('#noteModal').height() 
         }, 'slow');
-     }
+    }
     $('#noteModal').on('shown.bs.modal', function() {
         resize.call($('#content')[0]);
     });

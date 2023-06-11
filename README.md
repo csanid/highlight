@@ -45,9 +45,14 @@ The ``delete`` view also takes a ``note_id`` as argument in order to delete from
 
 The ``search`` view retrieves from the form the search term provided by the user and queries the records of the notes saved by them to check if that term is present in any of the fields. If there are notes where that term appears, they will be added to a QuerySet object that will be returned to the ``index.html`` template so that they can be displayed to the user. Otherwise, the QuerySet will be empty and a message will be shown indicating that there are no results.
 
-Finally, the ``get_note`` view VER de describirlo como API.
+Finally, the ``get_note`` view handles the API request made when the user clicks on a card to view the whole contents of the note or to edit it. The ``note_id`` that this view takes as argument is used to retrieve the data associated to that note from the database. The view then proceeds to create with that data a set of key-value pairs that is returned as a ``JsonResponse`` and will be handled by a JavaScript function that populates the form with the data received. 
 
 ##### **Interaction with database**
+One of the most challenging problems I had to solve while working on the app was the communication between the database and the front-end. I had to write some JavaScript functions and create an API endpoint so that, when the user clicks on a card displayed on the main page of the app, the modal would open up and the form be populated with the data from the corresponding note. The form modal for viewing the complete content of the notes and for editing them is the same used for adding a new note. 
+To achieve this, an anonymous JavaScript function written in the file ``highlight.js`` listens for any click made on a card shown on the main page. The function then opens up the modal and saves in a variable the id stored in the dataset of the card. It finally calls the ``get_note`` function with the value saved in ``note_id`` as parameter. 
+
+The ``get_note`` function in ``highlight.js`` makes an API request to an endpoint that will retrieve the content of the note taking that id as parameter as I explained above on the paragraph about the ``get_note`` view. 
+
 
 ##### **User interface** 
 Justificar fields específicos: the notes to serve as well as bibliographic records. 
