@@ -48,13 +48,16 @@ The ``search`` view retrieves from the form the search term provided by the user
 Finally, the ``get_note`` view handles the API request made when the user clicks on a card to view the whole contents of the note or to edit it. The ``note_id`` that this view takes as argument is used to retrieve the data associated to that note from the database. The view then proceeds to create with that data a set of key-value pairs that is returned as a ``JsonResponse`` and will be handled by a JavaScript function that populates the form with the data received. 
 
 ##### **Interaction with database**
-One of the most challenging problems I had to solve while working on the app was the communication between the database and the front-end. I had to write some JavaScript functions and create an API endpoint so that, when the user clicks on a card displayed on the main page of the app, the modal would open up and the form be populated with the data from the corresponding note. The form modal for viewing the complete content of the notes and for editing them is the same used for adding a new note. 
-To achieve this, an anonymous JavaScript function written in the file ``highlight.js`` listens for any click made on a card shown on the main page. The function then opens up the modal and saves in a variable the id stored in the dataset of the card. It finally calls the ``get_note`` function with the value saved in ``note_id`` as parameter. 
+One of the most challenging problems I had to solve while working on the app was that of the communication between the database and the front-end. I approached it by writing some JavaScript functions and creating an API endpoint so that, when the user clicks on a card displayed on the main page of the app, the modal would open up and the form be populated with the data from the corresponding note. The modal form for viewing the complete content of the notes and for editing them is the same used for adding a new note. 
 
-The ``get_note`` function in ``highlight.js`` makes an API request to an endpoint that will retrieve the content of the note taking that id as parameter as I explained above on the paragraph about the ``get_note`` view. 
+To achieve this, an anonymous JavaScript function written in the file ``highlight.js`` listens for any click made on a card shown on the main page. The function then opens up the modal and saves in a variable the id of the note that is stored in the dataset of the card. It finally calls the ``get_note`` function with the value saved in ``note_id`` as parameter. 
 
+The ``get_note`` function in ``highlight.js`` makes an API request to an endpoint that will retrieve from the database the content of the note through the URL ``/highlight/notes/${id}``. This URL is associated in ``urls.py`` to the view ``get_note`` explained in the previous section. With the ``JsonResponse`` returned by that view and saved in the variable ``data``, the JavaScript function ``get_note`` calls the function ``populate_form`` taking the JSON data as its argument. This function populates the fields of the modal form with the data received from the server in JSON format. 
 
 ##### **User interface** 
+The remaining JavaScript and jQuery functions in ``highlight.js`` take care of the attributes and behavior of different HTML elements. Before explaining in detail what they do, it's convenient to describe first the design of the user interface. The file ``layout.html`` is extended by all the other ``html`` files. It sets up the general configuration of the documents, imports all the necessary libraries (Bootstrap and jQuery), images, fonts and files, and creates a navbar displaying first the logo of the app. If no user has logged in, the navbar will 
+
+
 Justificar fields específicos: the notes to serve as well as bibliographic records. 
 
 Reconocer que se podría haber incorporado framework de front-end 

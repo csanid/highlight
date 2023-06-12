@@ -57,7 +57,7 @@ function populate_form(data) {
     form.content.value = data.content;
 } 
 
-// Handle server-side validation for form 
+// Handle server-side validation for note form 
 document.addEventListener('DOMContentLoaded', function() {
     $('#noteForm').on('submit', function (event) {
         event.preventDefault();
