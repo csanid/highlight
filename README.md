@@ -55,12 +55,24 @@ To achieve this, an anonymous JavaScript function written in the file ``highligh
 The ``get_note`` function in ``highlight.js`` makes an API request to an endpoint that will retrieve from the database the content of the note through the URL ``/highlight/notes/${id}``. This URL is associated in ``urls.py`` to the view ``get_note`` explained in the previous section. With the ``JsonResponse`` returned by that view and saved in the variable ``data``, the JavaScript function ``get_note`` calls the function ``populate_form`` taking the JSON data as its argument. This function populates the fields of the modal form with the data received from the server in JSON format. 
 
 ##### **User interface** 
-The remaining JavaScript and jQuery functions in ``highlight.js`` take care of the attributes and behavior of different HTML elements. Before explaining in detail what they do, it's convenient to describe first the design of the user interface. The file ``layout.html`` is extended by all the other ``html`` files. It sets up the general configuration of the documents, imports all the necessary libraries (Bootstrap and jQuery), images, fonts and files, and creates a navbar displaying first the logo of the app. If no user has logged in, the navbar will 
+The remaining JavaScript and jQuery functions in ``highlight.js`` take care of the attributes and behavior of different HTML elements. Before explaining in detail what they do, it's convenient to describe first the design of the user interface. The file ``layout.html`` is extended by all the other ``html`` files. It sets up the general configuration of the documents and imports all the necessary libraries (Bootstrap and jQuery), images, fonts and files. 
+
+It also creates a navbar displaying on the left the logo of the app (the word "Highlight" styled with an SVG image) set up as a link to the main page of the app. If no user has logged in, the navbar will show two links, "Log in" and "Register". These redirect to ``login.html`` and ``register.html`` respectively, where the user can fill out the corresponding forms. If a user has logged in, the options shown are "Settings" and "Log out". In ``settings.html`` the user can choose to change their password or delete their account. A click on "Log out" will terminate the current session and redirect to the ``login.html`` template. 
+
+The template ``index.html`` corresponds to the main page of the app. Below the navbar, it shows a button with the text "New note", which opens up the modal for adding a new note. The fields shown are title (required), author, book title, publisher, year and content (required). The optional fields are offered so that the notes may also serve as a bibliographic record. To the right of the "New note" button there is a text field and a button with the text "Search". This form enables the user to search through their notes. 
+
+The rest of the page shows a three-column grid of cards made with Bootstrap representing the notes saved by the current user. Each card shows the title of the note and the first four lines of the text saved in its content field. This is achieved with a for loop that iterates through the QuerySet received by the template as context from the ``index`` view. The title of each note will be set up as the title for each card, and the same will happen with the content.   
+
+In ``styles.css`` some properties are defined for the cards: background color, border, border radius and shadows. When the user hovers over a card, the shadow around the card will be a few pixels wider. An ellipsis after four lines of text is also defined for the class ``.card-text``.   
+
+The cards on each row will all have the same height. A click on the body of each card will open up the modal with the form prepopulated with the data from the corresponding note. If the user makes a change on any of the fields and then clicks on the button "Save", the changes will be saved. If the user clicks on the close button or outside the modal, or if they press the escape key, the modal will close without saving any changes made. 
+
+When the user hovers over each card, a delete button appears on the top right corner. It was made with an icon of a trashbin provided by Bootstrap and some CSS for styling its borders and shadows. If the user clicks on this button, another modal will open up asking the user for confirmation that they want to delete that note. The title of the note will be displayed in the message so that the user can review which note will be deleted. If they click "No", the note will be preserved; if they click "Yes", the note will be permanently deleted. 
+
+The first function in ``highlight.js`` resizes the content field of the modal form when the content loaded after a card is clicked on is longer than the default size of the field. I The user can thus see the complete text of the content field of the note without needing to scroll down the page or manually resize the textarea. 
 
 
-Justificar fields específicos: the notes to serve as well as bibliographic records. 
-
-Reconocer que se podría haber incorporado framework de front-end 
+Although it was a very productive challenge to solve this issues with JavaScript, in the future I plan to continue working on the project and one of my goals is to refactor the user interface with the incorporation of a front-end framework like React or Angular. 
 
 Hablar de los templates: describe the app from the point of view of the user experience 
 
