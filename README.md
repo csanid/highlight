@@ -63,16 +63,23 @@ The template ``index.html`` corresponds to the main page of the app. Below the n
 
 The rest of the page shows a three-column grid of cards made with Bootstrap representing the notes saved by the current user. Each card shows the title of the note and the first four lines of the text saved in its content field. This is achieved with a for loop that iterates through the QuerySet received by the template as context from the ``index`` view. The title of each note will be set up as the title for each card, and the same will happen with the content.   
 
-In ``styles.css`` some properties are defined for the cards: background color, border, border radius and shadows. When the user hovers over a card, the shadow around the card will be a few pixels wider. An ellipsis after four lines of text is also defined for the class ``.card-text``.   
+In ``styles.css`` some properties are defined for the cards: background color, border, border radius and shadow. The color chosen for the cards is a light yellow so that they resemble Post-it notes.  When the user hovers over a card, the shadow around the card will be a few pixels wider. An ellipsis after four lines of text is also defined for the class ``.card-text``.   
 
 The cards on each row will all have the same height. A click on the body of each card will open up the modal with the form prepopulated with the data from the corresponding note. If the user makes a change on any of the fields and then clicks on the button "Save", the changes will be saved. If the user clicks on the close button or outside the modal, or if they press the escape key, the modal will close without saving any changes made. 
 
 When the user hovers over each card, a delete button appears on the top right corner. It was made with an icon of a trashbin provided by Bootstrap and some CSS for styling its borders and shadows. If the user clicks on this button, another modal will open up asking the user for confirmation that they want to delete that note. The title of the note will be displayed in the message so that the user can review which note will be deleted. If they click "No", the note will be preserved; if they click "Yes", the note will be permanently deleted. 
 
-The first function in ``highlight.js`` resizes the content field of the modal form when the content loaded after a card is clicked on is longer than the default size of the field. I The user can thus see the complete text of the content field of the note without needing to scroll down the page or manually resize the textarea. 
+The first function in ``highlight.js`` resizes the content field of the modal form so that it doesn't require scrolling when the content loaded after a card is clicked on overflows the default size of the field (3 rows). It also automatically scrolls down the page if needed so that the bottom of the modal is visible to the user. I This way, the user can see the complete text of the content field of the note (or its last portion if it's a large note) without needing to scroll down the page or manually resize the textarea. I understand that the user may need instead to scroll up if they want to view or edit other fields of the form, but I implemented this design so that it would be easier to add content to a note.
 
+Another set of JavaScript functions defines if the action of the modal form should be ``/highlight/add`` (when the modal opens up via a click on the "New note" button) or ``/highlight/edit/${note_id}`` (when the modal opens up after a click on a card). The showing of the modal when a card is clicked on is also handled with JavaScript. 
+
+Furthermore, when the modal hides, its fields are reset with another JavaScript function. This was needed as otherwise the form would preserve unsaved content when the modal was closed and reopened. 
+
+Finally, a jQuery function sets the text that should be displayed action for the confirmation button and the text in the modal that opens up when the user clicks on the delete button of a card. 
 
 Although it was a very productive challenge to solve this issues with JavaScript, in the future I plan to continue working on the project and one of my goals is to refactor the user interface with the incorporation of a front-end framework like React or Angular. 
+
+The responsiveness of the app was achieved with the use of Bootstrap classes. 
 
 Hablar de los templates: describe the app from the point of view of the user experience 
 
