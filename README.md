@@ -1,5 +1,5 @@
 # Highlight
-#### Video Demo:  <Agregar URL>
+#### Video Demo:  <https://www.youtube.com/watch?v=hzZWzcbb9nA>
 #### Description:
 Highlight is a single-page note-taking app for readings built with Django. It allows users to create an account with an username and a password. Once the user is logged in, they can add a new note through a form where they must fill in the title of the note and its content. Optionally, users can also fill in four other fields useful for those who may wish to store more specific information on their readings: author, title of the book, publisher and year. The main page of Highlight shows all the notes saved by the user currently logged in. The notes can be edited or deleted, and the user can also search through the notes. Finally, the user can access their account settings in order to change their password or delete their account along with all of their notes from the database. 
 
