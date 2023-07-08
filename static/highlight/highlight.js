@@ -4,11 +4,12 @@ $(document).ready(function() {
         $(this).css('height', 'auto');
         $(this).css('height', this.scrollHeight + 'px');
 
-        $('#noteModal').animate({
-            scrollTop: $('#noteModal').height() 
-        }, 'slow');
+        // $('#noteModal').animate({
+        //     scrollTop: $('#noteModal').height() 
+        // }, 'slow');
     }
     $('#noteModal').on('shown.bs.modal', function() {
+    // $('#card').on('click', function() {
         resize.call($('#content')[0]);
     });
 });
