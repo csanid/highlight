@@ -1,5 +1,4 @@
 name: Cypress Tests
-
 on: push
 
 jobs:
@@ -8,10 +7,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      # Install npm dependencies, cache them correctly
-      # and run all Cypress tests
+
+      # 1. Set up Python 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # 2. Install Python dependencies
+      - name: Install Python deps
+        run: |
+          pip install -r requirements.txt
+
+      # 3. Run Cypress
       - name: Cypress run
         uses: cypress-io/github-action@v7
         with:
+          install-command: npm install 
           build: npm run build
           start: npm start
+          wait-on: 'http://localhost:8000'
